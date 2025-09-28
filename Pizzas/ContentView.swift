@@ -31,7 +31,9 @@ struct ContentView: View {
                         .multilineTextAlignment(.center)
                         .padding(.horizontal)
                     
-                    VStack(spacing: 30) {
+                    LazyVGrid(columns: [
+                        GridItem(.adaptive(minimum: 300), spacing: 20),
+                    ], spacing: 30) {
                         // Pizza 1 Section
                         PizzaInputSection(
                             title: "Pizza 1",
@@ -39,7 +41,7 @@ struct ContentView: View {
                             diameter: $pizza1Diameter,
                             price: $pizza1Price
                         )
-                        
+
                         // Pizza 2 Section
                         PizzaInputSection(
                             title: "Pizza 2",
