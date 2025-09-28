@@ -23,7 +23,6 @@ struct ContentView: View {
                         .font(.largeTitle)
                         .fontWeight(.bold)
                         .multilineTextAlignment(.center)
-                        .padding()
                     
                     Text("Compare which pizza gives you more value for your money!")
                         .font(.subheadline)
