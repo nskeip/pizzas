@@ -71,6 +71,13 @@ struct ContentView: View {
             .navigationBarHidden(true)
         }
     }
+
+    init(pizza1Diameter: String = "", pizza1Price: String = "", pizza2Diameter: String = "", pizza2Price: String = "") {
+        self._pizza1Diameter = State(initialValue: pizza1Diameter)
+        self._pizza1Price = State(initialValue: pizza1Price)
+        self._pizza2Diameter = State(initialValue: pizza2Diameter)
+        self._pizza2Price = State(initialValue: pizza2Price)
+    }
 }
 
 struct PizzaInputSection: View {
@@ -209,6 +216,20 @@ struct PizzaComparisonView: View {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView()
+        Group {
+            ContentView()
+                .previewDisplayName("iPhone Portrait - Empty")
+
+            ContentView(pizza1Diameter: "12", pizza1Price: "15.99", pizza2Diameter: "16", pizza2Price: "22.99")
+                .previewDisplayName("iPhone Portrait - Filled")
+
+            ContentView()
+                .previewInterfaceOrientation(.landscapeLeft)
+                .previewDisplayName("iPhone Landscape - Empty")
+
+            ContentView(pizza1Diameter: "12", pizza1Price: "15.99", pizza2Diameter: "16", pizza2Price: "22.99")
+                .previewInterfaceOrientation(.landscapeLeft)
+                .previewDisplayName("iPad Landscape - Filled")
+        }
     }
 }
