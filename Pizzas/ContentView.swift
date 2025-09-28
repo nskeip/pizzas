@@ -49,27 +49,25 @@ struct ContentView: View {
                             diameter: $pizza2Diameter,
                             price: $pizza2Price
                         )
-                        
-                        // Comparison Results
-                        if !pizza1Diameter.isEmpty && !pizza1Price.isEmpty &&
-                           !pizza2Diameter.isEmpty && !pizza2Price.isEmpty {
-                            let pizzasToCompare = [
-                                Pizza.makeFrom(stringDiameter: pizza1Diameter, stringPrice: pizza1Price),
-                                Pizza.makeFrom(stringDiameter: pizza2Diameter, stringPrice: pizza2Price),
-                            ].compactMap { $0 }
-                            if pizzasToCompare.count > 1 {
-                                PizzaComparisonView(
-                                    pizzas: pizzasToCompare
-                                )
+                    }
 
-                            }
+                    // Comparison Results - moved outside the grid
+                    if !pizza1Diameter.isEmpty && !pizza1Price.isEmpty &&
+                       !pizza2Diameter.isEmpty && !pizza2Price.isEmpty {
+                        let pizzasToCompare = [
+                            Pizza.makeFrom(stringDiameter: pizza1Diameter, stringPrice: pizza1Price),
+                            Pizza.makeFrom(stringDiameter: pizza2Diameter, stringPrice: pizza2Price),
+                        ].compactMap { $0 }
+                        if pizzasToCompare.count > 1 {
+                            PizzaComparisonView(
+                                pizzas: pizzasToCompare
+                            )
+                            .frame(maxWidth: .infinity)
                         }
                     }
-                    .padding()
                 }
             }
-            .navigationBarHidden(true)
-        }
+        }.padding()
     }
 
     init(pizza1Diameter: String = "", pizza1Price: String = "", pizza2Diameter: String = "", pizza2Price: String = "") {
@@ -141,43 +139,49 @@ struct PizzaComparisonView: View {
         } else if pizzas.count == 1 {
             Text("You have only one pizza to compare. That's odd!")
         }
-        VStack(spacing: 15) {
-            Text("Comparison Results")
-                .font(.headline)
-                .fontWeight(.semibold)
-            
-            // Winner announcement
-            VStack(spacing: 8) {
-                if pizzas.allSatisfy({ $0 == pizzas.first }) {
-                    Text("Pizzas are equal!")
-                        .font(.title2)
-                        .fontWeight(.bold)
-                        .foregroundColor(.orange)
-                } else {
-                    let bestPizzaIdx = pizzas.enumerated().min(by: { $0.element < $1.element })!.offset
-                    Text("Pizza \(bestPizzaIdx + 1) is the better deal!")
-                        .font(.title2)
-                        .fontWeight(.bold)
-                        .foregroundColor(.green)
-                    
-                    if pizzas.count == 2 {
-                        let secondBestPizzaIdx = 1 - bestPizzaIdx
-                        let p1 = pizzas[bestPizzaIdx]
-                        let p2 = pizzas[secondBestPizzaIdx]
-                        let savings = (p2.pricePerAreaUnit - p1.pricePerAreaUnit) / p2.pricePerAreaUnit * 100
-                        Text("You save \(savings)% per square inch")
-                            .font(.subheadline)
-                            .foregroundColor(.secondary)
+        
+        LazyVGrid(columns: [
+            GridItem(.adaptive(minimum: 300), spacing: 20)
+        ], spacing: 20) {
+            // col 1
+            VStack(spacing: 15) {
+                Text("Comparison Results")
+                    .font(.headline)
+                    .fontWeight(.semibold)
+                
+                // Winner announcement
+                VStack(spacing: 8) {
+                    if pizzas.allSatisfy({ $0 == pizzas.first }) {
+                        Text("Pizzas are equal!")
+                            .font(.title2)
+                            .fontWeight(.bold)
+                            .foregroundColor(.orange)
+                    } else {
+                        let bestPizzaIdx = pizzas.enumerated().min(by: { $0.element < $1.element })!.offset
+                        Text("Pizza \(bestPizzaIdx + 1) is the better deal!")
+                            .font(.title2)
+                            .fontWeight(.bold)
+                            .foregroundColor(.green)
+                        
+                        if pizzas.count == 2 {
+                            let secondBestPizzaIdx = 1 - bestPizzaIdx
+                            let p1 = pizzas[bestPizzaIdx]
+                            let p2 = pizzas[secondBestPizzaIdx]
+                            let savings = (p2.pricePerAreaUnit - p1.pricePerAreaUnit) / p2.pricePerAreaUnit * 100
+                            Text("You save \(savings)% per square inch")
+                                .font(.subheadline)
+                                .foregroundColor(.secondary)
+                        }
                     }
                 }
+                .padding()
+                .background(
+                    RoundedRectangle(cornerRadius: 10)
+                        .fill(.green.opacity(0.1))
+                )
             }
-            .padding()
-            .background(
-                RoundedRectangle(cornerRadius: 10)
-                    .fill(.green.opacity(0.1))
-            )
             
-            // Detailed breakdown
+            // col 2
             VStack(alignment: .leading, spacing: 12) {
                 Text("Detailed Breakdown:")
                     .font(.subheadline)
