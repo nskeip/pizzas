@@ -58,7 +58,7 @@ struct ContentView: View {
                                 Pizza.makeFrom(stringDiameter: pizza2Diameter, stringPrice: pizza2Price),
                             ].compactMap { $0 }
                             if pizzasToCompare.count > 1 {
-                                ComparisonResultView(
+                                PizzaComparisonView(
                                     pizzas: pizzasToCompare
                                 )
 
@@ -126,7 +126,7 @@ struct PizzaInputSection: View {
     }
 }
 
-struct ComparisonResultView: View {
+struct PizzaComparisonView: View {
     let pizzas: [Pizza]
     var body: some View {
         if pizzas.isEmpty {
