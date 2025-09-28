@@ -168,7 +168,7 @@ struct PizzaComparisonView: View {
                             let p1 = pizzas[bestPizzaIdx]
                             let p2 = pizzas[secondBestPizzaIdx]
                             let savings = (p2.pricePerAreaUnit - p1.pricePerAreaUnit) / p2.pricePerAreaUnit * 100
-                            Text("You save \(savings)% per square inch")
+                            Text("You save \(String(format: "%.2f", savings))%")
                                 .font(.subheadline)
                                 .foregroundColor(.secondary)
                         }
