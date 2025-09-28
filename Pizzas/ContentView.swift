@@ -16,53 +16,51 @@ struct ContentView: View {
     @State private var pizza2Price: String = ""
     
     var body: some View {
-        NavigationView {
-            ScrollView {
-                VStack(spacing: 20) {
-                    Text("Pizza Price Comparison")
-                        .font(.largeTitle)
-                        .fontWeight(.bold)
-                        .multilineTextAlignment(.center)
-                    
-                    Text("Compare which pizza gives you more value for your money!")
-                        .font(.subheadline)
-                        .foregroundColor(.secondary)
-                        .multilineTextAlignment(.center)
-                        .padding(.horizontal)
-                    
-                    LazyVGrid(columns: [
-                        GridItem(.adaptive(minimum: 300), spacing: 20),
-                    ], spacing: 30) {
-                        // Pizza 1 Section
-                        PizzaInputSection(
-                            title: "Pizza 1",
-                            color: .red,
-                            diameter: $pizza1Diameter,
-                            price: $pizza1Price
-                        )
+        ScrollView {
+            VStack(spacing: 20) {
+                Text("Pizza Price Comparison")
+                    .font(.largeTitle)
+                    .fontWeight(.bold)
+                    .multilineTextAlignment(.center)
+                
+                Text("Compare which pizza gives you more value for your money!")
+                    .font(.subheadline)
+                    .foregroundColor(.secondary)
+                    .multilineTextAlignment(.center)
+                    .padding(.horizontal)
+                
+                LazyVGrid(columns: [
+                    GridItem(.adaptive(minimum: 300), spacing: 20),
+                ], spacing: 30) {
+                    // Pizza 1 Section
+                    PizzaInputSection(
+                        title: "Pizza 1",
+                        color: .red,
+                        diameter: $pizza1Diameter,
+                        price: $pizza1Price
+                    )
 
-                        // Pizza 2 Section
-                        PizzaInputSection(
-                            title: "Pizza 2",
-                            color: .blue,
-                            diameter: $pizza2Diameter,
-                            price: $pizza2Price
-                        )
-                    }
+                    // Pizza 2 Section
+                    PizzaInputSection(
+                        title: "Pizza 2",
+                        color: .blue,
+                        diameter: $pizza2Diameter,
+                        price: $pizza2Price
+                    )
+                }
 
-                    // Comparison Results - moved outside the grid
-                    if !pizza1Diameter.isEmpty && !pizza1Price.isEmpty &&
-                       !pizza2Diameter.isEmpty && !pizza2Price.isEmpty {
-                        let pizzasToCompare = [
-                            Pizza.makeFrom(stringDiameter: pizza1Diameter, stringPrice: pizza1Price),
-                            Pizza.makeFrom(stringDiameter: pizza2Diameter, stringPrice: pizza2Price),
-                        ].compactMap { $0 }
-                        if pizzasToCompare.count > 1 {
-                            PizzaComparisonView(
-                                pizzas: pizzasToCompare
-                            )
-                            .frame(maxWidth: .infinity)
-                        }
+                // Comparison Results - moved outside the grid
+                if !pizza1Diameter.isEmpty && !pizza1Price.isEmpty &&
+                   !pizza2Diameter.isEmpty && !pizza2Price.isEmpty {
+                    let pizzasToCompare = [
+                        Pizza.makeFrom(stringDiameter: pizza1Diameter, stringPrice: pizza1Price),
+                        Pizza.makeFrom(stringDiameter: pizza2Diameter, stringPrice: pizza2Price),
+                    ].compactMap { $0 }
+                    if pizzasToCompare.count > 1 {
+                        PizzaComparisonView(
+                            pizzas: pizzasToCompare
+                        )
+                        .frame(maxWidth: .infinity)
                     }
                 }
             }
