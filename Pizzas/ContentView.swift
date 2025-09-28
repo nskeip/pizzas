@@ -193,8 +193,14 @@ struct PizzaComparisonView: View {
                             Text("Pizza \(index + 1):")
                             Spacer()
                             VStack(alignment: .trailing, spacing: 2) {
-                                Text("\(String(format: "%.1f", pizza.area)) sq in")
-                                Text("$\(String(format: "%.3f", pizza.pricePerAreaUnit))/sq in")
+                                let preferredUnit = Locale.current.measurementSystem == .metric ?                                UnitArea.squareCentimeters : UnitArea.squareInches
+
+                                let roundedArea = round(pizza.area, 2)
+                                Text("\(roundedArea) \(preferredUnit.symbol)")
+                                
+                                let roundedPricePerAreaUnit = round(pizza.pricePerAreaUnit, 3)
+                                let currencySymbol = Locale.current.currency.symbol ?? ""
+                                Text("\(currencySymbol)\(roundedPricePerAreaUnit)/\(preferredUnit.symbol)")
                                     .font(.caption)
                                     .foregroundColor(.secondary)
                             }
