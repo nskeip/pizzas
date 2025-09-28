@@ -50,13 +50,6 @@ class LocalizationService: LocalizationServiceProtocol {
     }
 
     func getAreaUnitSymbol() -> String {
-        let preferredUnit: UnitArea
-        if #available(iOS 16, *) {
-            preferredUnit = locale.measurementSystem == .metric ? UnitArea.squareCentimeters : UnitArea.squareInches
-        } else {
-            // Fallback for earlier versions - use deprecated usesMetricSystem
-            preferredUnit = locale.usesMetricSystem ? UnitArea.squareCentimeters : UnitArea.squareInches
-        }
-        return preferredUnit.symbol
+        return getPreferredAreaUnit().symbol
     }
 }
